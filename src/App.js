@@ -5,6 +5,8 @@ import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import MyInput from "./components/UI/input/MyInput";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/MyModal/MyModal";
+import MyButton from "./components/UI/button/MyButton";
 
 //rsc-снипед для создания функции
 //e.preventDefault()-предотвращает дефолтное поведение
@@ -15,7 +17,6 @@ import PostFilter from "./components/PostFilter";
 // 						{value:'title',name:'По названию'},
 // 						{value:'body',name:'По описанию'},
 // 					]}именно по этим обьектам из хука posts будет происходить сортировка
-//на основание функции выше делаем поиск
 //Метод includes() определяет, содержит ли массив определённый элемент, возвращая в зависимости от этого true или false.
 
 function App() {
@@ -24,7 +25,10 @@ function App() {
 		{id: 2, title: 'Javascript2', body: 'Description'},
 		{id: 3, title: 'Javascript3', body: 'Description'}
 	]);
+
 	const [filter, setFilter] = useState({sort: '', query: ''})
+
+	const [modal,setModal] = useState(false);
 //==========поиск=====================================================
 	const sortedPosts = useMemo(() => {
 		if (filter.sort) {
@@ -32,6 +36,7 @@ function App() {
 		}
 		return posts;
 	}, [filter.sort, posts])
+
 	const sortedAndSearchedPosts = useMemo(() => {
 		return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
 	}, [filter.query, sortedPosts])
@@ -39,6 +44,7 @@ function App() {
 	//колбэк функция получающая аргумент из дочерней функции
 	const createPost = (newPost) => {
 		setPosts([...posts, newPost])
+		setModal(false)
 	}
 	const removePost = (post) => {
 		setPosts(posts.filter(p => p.id !== post.id))
@@ -46,10 +52,16 @@ function App() {
 	//каждая новая компонента может быть использована с разными пропсами
 	return (
 		<div className="App">
-			<PostForm create={createPost}/>
-
+			<MyButton style={{marginTop:'30px'}} onClick={()=>setModal(true)}>
+				Создать пользователя
+			</MyButton>
+			<MyModal
+				visible={modal}
+				setVisible={setModal}
+			>
+				<PostForm create={createPost}/>
+			</MyModal>
 			<hr style={{margin: '15px 0'}}/>
-
 			<PostFilter
 				filter={filter}
 				setFilter={setFilter}/>
