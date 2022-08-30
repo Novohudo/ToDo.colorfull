@@ -1,12 +1,11 @@
-import React, {useMemo, useState} from "react";
+import React, { useState} from "react";
 import './styles/App.css'
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
-import MySelect from "./components/UI/select/MySelect";
-import MyInput from "./components/UI/input/MyInput";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
+import {usePosts} from "./components/hooks/usePosts";
 
 //rsc-снипед для создания функции
 //e.preventDefault()-предотвращает дефолтное поведение
@@ -20,28 +19,11 @@ import MyButton from "./components/UI/button/MyButton";
 //Метод includes() определяет, содержит ли массив определённый элемент, возвращая в зависимости от этого true или false.
 
 function App() {
-	const [posts, setPosts] = useState([
-		{id: 1, title: 'Javascript', body: 'Description'},
-		{id: 2, title: 'Javascript2', body: 'Description'},
-		{id: 3, title: 'Javascript3', body: 'Description'}
-	]);
-
+	const [posts, setPosts] = useState([ ]);
 	const [filter, setFilter] = useState({sort: '', query: ''})
-
 	const [modal,setModal] = useState(false);
-//==========поиск=====================================================
-	const sortedPosts = useMemo(() => {
-		if (filter.sort) {
-			return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-		}
-		return posts;
-	}, [filter.sort, posts])
+	const sortedAndSearchedPosts=usePosts(posts,filter.sort,filter.query);
 
-	const sortedAndSearchedPosts = useMemo(() => {
-		return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
-	}, [filter.query, sortedPosts])
-//--------------------------------------------------------------------
-	//колбэк функция получающая аргумент из дочерней функции
 	const createPost = (newPost) => {
 		setPosts([...posts, newPost])
 		setModal(false)
@@ -49,7 +31,7 @@ function App() {
 	const removePost = (post) => {
 		setPosts(posts.filter(p => p.id !== post.id))
 	}
-	//каждая новая компонента может быть использована с разными пропсами
+
 	return (
 		<div className="App">
 			<MyButton style={{marginTop:'30px'}} onClick={()=>setModal(true)}>
@@ -74,8 +56,3 @@ function App() {
 }
 
 export default App;
-
-//отрисовка по условию - {posts.length !== 0
-// 			? <PostList remove={removePost} posts={posts} title={'Посты про JS'}/>
-//! 				:	<div>Посты не найдены !</div>
-// 			}

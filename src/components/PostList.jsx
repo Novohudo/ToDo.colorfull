@@ -30,3 +30,4 @@ const PostList = ({posts,title,remove}) => {
 export default PostList;
 
 //формирование правильной нумерации- number={index + 1}
+//TransitionGroup- npm install react-transition-group --save
