@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useEffect, useState} from "react";
 import './styles/App.css'
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
@@ -6,6 +6,8 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import {usePosts} from "./components/hooks/usePosts";
+import axios from "axios";
+import PostService from "./API/PostService";
 
 //rsc-снипед для создания функции
 //e.preventDefault()-предотвращает дефолтное поведение
@@ -19,10 +21,22 @@ import {usePosts} from "./components/hooks/usePosts";
 //Метод includes() определяет, содержит ли массив определённый элемент, возвращая в зависимости от этого true или false.
 
 function App() {
-	const [posts, setPosts] = useState([ ]);
+	const [posts, setPosts] = useState([]);
 	const [filter, setFilter] = useState({sort: '', query: ''})
-	const [modal,setModal] = useState(false);
-	const sortedAndSearchedPosts=usePosts(posts,filter.sort,filter.query);
+	const [modal, setModal] = useState(false);
+	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+	const [isPostsLoading, setPostsLoading] = useState(false)
+	useEffect(() => {
+		fetchPosts()
+	}, [])
+
+	//сервис идет из отдельной компоненты в папке API
+	async function fetchPosts() {
+		setPostsLoading(true)
+		const posts = await PostService.getAll();
+		setPosts(posts);
+		setPostsLoading(false)
+	}
 
 	const createPost = (newPost) => {
 		setPosts([...posts, newPost])
@@ -34,7 +48,8 @@ function App() {
 
 	return (
 		<div className="App">
-			<MyButton style={{marginTop:'30px'}} onClick={()=>setModal(true)}>
+			<button onClick={fetchPosts}>GET POSTS</button>
+			<MyButton style={{marginTop: '30px'}} onClick={() => setModal(true)}>
 				Создать пользователя
 			</MyButton>
 			<MyModal
@@ -47,10 +62,13 @@ function App() {
 			<PostFilter
 				filter={filter}
 				setFilter={setFilter}/>
-			<PostList
-				remove={removePost}
-				posts={sortedAndSearchedPosts}
-				title={'Посты про JS'}/>
+
+			{isPostsLoading
+				? <h1>Загружаю</h1>
+				: <PostList
+					remove={removePost}
+					posts={sortedAndSearchedPosts}
+					title={'Посты про JS'}/>}
 		</div>
 	);
 }
