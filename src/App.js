@@ -6,8 +6,11 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import {usePosts} from "./components/hooks/usePosts";
-import axios from "axios";
 import PostService from "./API/PostService";
+import Loader from "./components/UI/Loader/Loader";
+import {useFetching} from "./components/hooks/useFetching";
+import {getPageCount, getPagesArray} from "./utils/pages";
+import Pagination from "./components/UI/pagination/Pagination";
 
 //rsc-снипед для создания функции
 //e.preventDefault()-предотвращает дефолтное поведение
@@ -24,19 +27,30 @@ function App() {
 	const [posts, setPosts] = useState([]);
 	const [filter, setFilter] = useState({sort: '', query: ''})
 	const [modal, setModal] = useState(false);
+	//состояние для пагинации
+	const [totalPages, setTotalPages] = useState(0);
+	const [limit, setLimit] = useState(10);
+	const [page, setPage] = useState(1);
+	//с помошью map который возьмет получениые данные - прорисуем кнопки
+	const changePage = (page) => {
+		setPage(page);
+	}
+	//------------------------------------------------------------------
 	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-	const [isPostsLoading, setPostsLoading] = useState(false)
+	//обработка индикации загрузки и вывод ошибок
+	const [fetchPosts, isLoading, error] = useFetching(async () => {
+		const response = await PostService.getAll(limit, page);
+		setPosts(response.data);
+		const totalCount = response.headers['x-total-count'];
+		setTotalPages(getPageCount(totalCount, limit))
+	})
+//юз эфект следит за изменением состояния post и обновляет страницу
 	useEffect(() => {
 		fetchPosts()
-	}, [])
+	}, [page])
 
+	//timeout для проверки анимации
 	//сервис идет из отдельной компоненты в папке API
-	async function fetchPosts() {
-		setPostsLoading(true)
-		const posts = await PostService.getAll();
-		setPosts(posts);
-		setPostsLoading(false)
-	}
 
 	const createPost = (newPost) => {
 		setPosts([...posts, newPost])
@@ -48,7 +62,11 @@ function App() {
 
 	return (
 		<div className="App">
-			<button onClick={fetchPosts}>GET POSTS</button>
+			<Pagination
+				changePage={changePage}
+				page={page}
+				totalPages={totalPages}/>
+			<MyButton onClick={fetchPosts}>GET POSTS</MyButton>
 			<MyButton style={{marginTop: '30px'}} onClick={() => setModal(true)}>
 				Создать пользователя
 			</MyButton>
@@ -63,12 +81,17 @@ function App() {
 				filter={filter}
 				setFilter={setFilter}/>
 
-			{isPostsLoading
-				? <h1>Загружаю</h1>
+			{/*отображение списка*/}
+			{error && <h1>Произошла ошибка {error}</h1>}
+
+			{isLoading
+				? <div style={{display: 'flex', justifyContent: 'center', marginTop: "50px"}}><Loader/></div>
 				: <PostList
 					remove={removePost}
 					posts={sortedAndSearchedPosts}
 					title={'Посты про JS'}/>}
+			{/*отображение кнопок в пагинации*/}
+
 		</div>
 	);
 }
