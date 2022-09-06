@@ -50,6 +50,14 @@
       backdrop-filter: blur(10.5px);
       -webkit-backdrop-filter: blur(10.5px);
 }
+.post__btns{
+      display: flex;
+}
+.post__btns button:nth-child(1):hover{
+      background-color: #ff0000;
+      color: white;
+      transition-duration: 1s;
+}
 /*============================================*/
 /*стили для Transition-group*/
 .post-enter {

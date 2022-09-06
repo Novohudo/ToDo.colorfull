@@ -9,7 +9,7 @@ import {usePosts} from "../components/hooks/usePosts";
 import PostService from "../API/PostService";
 import Loader from "../components/UI/Loader/Loader";
 import {useFetching} from "../components/hooks/useFetching";
-import {getPageCount, getPagesArray} from "../utils/pages";
+import {getPageCount} from "../utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
 
 //rsc-снипед для создания функции
