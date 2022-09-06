@@ -1,8 +1,12 @@
 .myBtn {
       padding: 5px 15px;
-      color:teal;
+      color:black;
       font-size: 14px;
       background: transparent;
-      border:1px solid teal;
+      border:none;
       cursor: pointer;
+      background: rgba(255, 255, 255, 0.29);
+      box-shadow: 0 5px 10px rgb(60, 60, 60);
+      backdrop-filter: blur(10.5px);
+      -webkit-backdrop-filter: blur(10.5px);
 }
