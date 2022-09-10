@@ -1,19 +1,23 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
-import Posts from "../../pages/Posts";
-import About from "../../pages/About";
-import Error from "../../pages/Error";
-import PostIdPage from "../../pages/PostIdPage";
+import {Navigate, Route, Routes} from "react-router-dom";
+import {privateMap, publicMap} from "../../router/routers";
 
+//обьект privateMap/publicMap -содержит в себе шаблон работы с роутами -routes.jsx
 const AppRouter = () => {
+	const isAuth = false;
 	return (
-		<Routes>
-			<Route path="/posts" element={<Posts/>}/>
-			<Route path="/about" element={<About/>}/>
-			<Route path="/posts/:id" element={<PostIdPage/>}/>
-			<Route path={"*"} element={<Error/>}/>
-		</Routes>
-	);
+		isAuth
+			?
+			<Routes>
+				{privateMap}
+				<Route path="/*" element={<Navigate replace to="/posts"/>}/>
+			</Routes>
+			:
+			<Routes>
+				{publicMap}
+				<Route path="/*" element={<Navigate replace to="/login"/>}/>
+			</Routes>
+	)
 };
 //<Route path="/posts/:id" element={<PostIdPage/>}/>-работает с navigate(`/posts/${props.post.id}`)
 export default AppRouter;
