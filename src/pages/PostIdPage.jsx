@@ -3,7 +3,6 @@ import {useParams} from "react-router-dom";
 import {useFetching} from "../components/hooks/useFetching";
 import PostService from "../API/PostService";
 import Loader from "../components/UI/Loader/Loader";
-//useParams получает параметры обьекта
 
 const PostIdPage = () => {
 	const params = useParams();
@@ -24,16 +23,16 @@ const PostIdPage = () => {
 		fetchComments(params.id)
 	}, [])
 	return (
-		<div>
-			<h1>Вы открыли страницу поста с ID = {params.id}</h1>
+		<div className={"pageIdWrap"}>
+			<h1>You are open page with ID = {params.id}</h1>
 			{isLoading
 				? <Loader/>
 				: <div>{post.id}.{post.title}</div>
 			}
-			<h1>Коментарий</h1>
+			<h1>Comments</h1>
 			{isComLoading
 				? <Loader/>
-				: <div style={{marginTop:15}}>
+				: <div style={{marginTop: 15}}>
 					{comments.map(comm =>
 						<div>
 							<h5>{comm.email}</h5>

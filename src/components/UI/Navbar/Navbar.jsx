@@ -5,7 +5,7 @@ import {AuthContext} from "../../../context";
 
 const Navbar = () => {
 	const {isAuth, setIsAuth} = useContext(AuthContext)
-//элемент реакции из useEffect(App)
+
 	const logout = () =>{
 		setIsAuth(false);
 		localStorage.removeItem('auth');
@@ -14,10 +14,10 @@ const Navbar = () => {
 	return (
 		<div className={"navbar"}>
 			<div className="navbar__links">
-				<Link to={"/about"}>О Сайте</Link>
-				<Link to={"/posts"}>Посты</Link>
+				<Link to={"/about"}>About</Link>
+				<Link to={"/posts"}>Posts</Link>
 			</div>
-			<MyButton style={{marginLeft: 40}} onClick={logout}>Выйти</MyButton>
+			<MyButton style={{marginLeft: 40}} onClick={logout}>Log out</MyButton>
 		</div>
 	);
 };

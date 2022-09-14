@@ -4,7 +4,6 @@ import PostIdPage from "../pages/PostIdPage";
 import {Route} from "react-router-dom";
 import Login from "../pages/Login";
 
-//место хранения роутов
 const privateRoutes = [
 	{path: "/posts", element: <Posts/>},
 	{path: "/about", element: <About/>},

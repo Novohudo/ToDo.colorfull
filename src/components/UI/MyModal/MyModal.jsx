@@ -17,5 +17,3 @@ const MyModal = ({children,visible,setVisible}) => {
 };
 
 export default MyModal;
-
-//stopPropagation()-Прекращает дальнейшую передачу текущего события.(против конфликта с родительским ОнКликом)

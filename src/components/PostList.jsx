@@ -5,7 +5,7 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 const PostList = ({posts,title,remove}) => {
 	if(!posts.length){
 		return (
-			<h1 style={{textAlign:'center'}}>Посты не найдены!</h1>
+			<h1 style={{textAlign:'center'}}>Posts not found!</h1>
 		)
 	}
 	return (
@@ -28,6 +28,3 @@ const PostList = ({posts,title,remove}) => {
 };
 
 export default PostList;
-
-//формирование правильной нумерации- number={index + 1}
-//TransitionGroup- npm install react-transition-group --save

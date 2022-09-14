@@ -1,7 +1,6 @@
 import React from 'react';
 import MyButton from "./UI/button/MyButton";
 import {useNavigate} from "react-router-dom";
-//useNavigate позволяет использовать историю перехода и по онклику переключать компоненты-аналог useHistory
 
 const PostItem = (props) => {
 	const navigate = useNavigate();
@@ -16,11 +15,11 @@ const PostItem = (props) => {
 			</div>
 			<div className="post__btns">
 				<MyButton onClick={()=>props.remove(props.post)}>X</MyButton>
-				<MyButton onClick={()=>navigate(`/posts/${props.post.id}`)}>Открыть</MyButton>
+				<MyButton onClick={()=>navigate(`/posts/${props.post.id}`)}>Open</MyButton>
 
 			</div>
 		</div>
 	);
-};//navigate(`/posts/${props.post.id}`)-для перехода на определенный обьект по id
+};
 
 export default PostItem;

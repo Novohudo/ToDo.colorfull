@@ -14,17 +14,6 @@ import Pagination from "../components/UI/pagination/Pagination";
 import {useObserver} from "../components/hooks/useObserver";
 import MySelect from "../components/UI/select/MySelect";
 
-//rsc-снипед для создания функции
-//e.preventDefault()-предотвращает дефолтное поведение
-//useRef()-для доступа к дом дереву и извлечению значений
-//(post.filter(p=>p.id !== post.id))-отфильтровывает обьект по указаному варианту (отфильтрованый обьект выполнен не будет
-//если id переданого обьекта равняеться тому что есть внутри - совпадение будет удалено
-//options={[
-// 						{value:'title',name:'По названию'},
-// 						{value:'body',name:'По описанию'},
-// 					]}именно по этим обьектам из хука posts будет происходить сортировка
-//Метод includes() определяет, содержит ли массив определённый элемент, возвращая в зависимости от этого true или false.
-
 function Posts() {
 	const [posts, setPosts] = useState([]);
 	const [filter, setFilter] = useState({sort: '', query: ''})
@@ -34,17 +23,15 @@ function Posts() {
 	const [page, setPage] = useState(1);
 	const lastElement = useRef();
 
-
-	//------------------------------------------------------------------
 	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-	//обработка индикации загрузки и вывод ошибок
+
 	const [fetchPosts, isLoading, error] = useFetching(async () => {
 		const response = await PostService.getAll(limit, page);
 		setPosts([...posts, ...response.data]);
 		const totalCount = response.headers['x-total-count'];
 		setTotalPages(getPageCount(totalCount, limit))
 	})
-//юз эфект следит за изменением состояния post и обновляет страницу
+
 	useObserver(lastElement, page < totalPages, isLoading, () => {
 		setPage(page + 1);
 	})
@@ -52,8 +39,6 @@ function Posts() {
 		fetchPosts(limit, page)
 	}, [page,limit])
 
-	//timeout для проверки анимации
-	//сервис идет из отдельной компоненты в папке API
 	const changePage = (page) => {
 		setPage(page);
 	}
@@ -71,9 +56,8 @@ function Posts() {
 				changePage={changePage}
 				page={page}
 				totalPages={totalPages}/>
-			<MyButton onClick={fetchPosts}>GET POSTS</MyButton>
 			<MyButton style={{marginTop: '30px', marginLeft: '2px'}} onClick={() => setModal(true)}>
-				Создать пользователя
+				Create Post
 			</MyButton>
 			<MyModal
 				visible={modal}
@@ -81,24 +65,26 @@ function Posts() {
 			>
 				<PostForm create={createPost}/>
 			</MyModal>
+
 			<hr style={{margin: '15px 0'}}/>
 			<PostFilter
 				filter={filter}
 				setFilter={setFilter}/>
-			{/*настройка лимита*/}
+
+			<div style={{backgroundColor:"rgba(255, 255, 255, 0.29)",width:177,marginTop:5,padding:5}}>
 			<MySelect
 			value={limit}
 			onChange={value=>setLimit(value)}
-			defaultValue={"Кол-во элементов на странице"}
+			defaultValue={"number of items on page"}
 			options={[
-				{value:5,name:'5'},
-				{value:10,name:'10'},
-				{value:25,name:'25'},
-				{value:-1,name:'показать все'},
+				{value:5,name:'items:5'},
+				{value:10,name:'items:10'},
+				{value:25,name:'items:25'},
+				{value:-1,name:'items:show all'},
 			]}
 			/>
-			{/*отображение списка*/}
-			{error && <h1>Произошла ошибка {error}</h1>}
+			</div>
+			{error && <h1>Error{error}</h1>}
 
 			{isLoading &&
 				<div style={{display: 'flex', justifyContent: 'center', marginTop: "50px"}}><Loader/></div>
@@ -106,12 +92,12 @@ function Posts() {
 			<PostList
 				remove={removePost}
 				posts={sortedAndSearchedPosts}
-				title={'Посты про JS'}/>
+				title={'Posts'}/>
 
-			<div ref={lastElement} style={{color: 'red'}}></div>
+			<div ref={lastElement}></div>
 
 		</div>
-	);//наблюдаемый <div ref={lastElement} каждый раз когда в зоне видимости будет наблюдаться этот блок-сработате колбэк
+	);
 }
 
 export default Posts;

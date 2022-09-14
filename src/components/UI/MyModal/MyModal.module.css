@@ -1,4 +1,4 @@
-/*всплывающее окно стиль css*/
+
 .myModal{
       position: fixed;
       top:0;
@@ -7,6 +7,7 @@
       left:0;
       display: none;
       background-color: rgba(0, 0, 0, 0.51);
+      z-index: 1;
 }
 .myModalContent{
       padding: 25px;
@@ -19,4 +20,5 @@
       justify-content: center;
       align-items:flex-start;
       padding-top: 400px;
+
 }

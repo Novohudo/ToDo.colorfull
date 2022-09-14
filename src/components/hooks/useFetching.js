@@ -1,5 +1,3 @@
-//состояние которое отвечает за загрузку isLoading
-//состояние для обработки ошибок error
 
 import {useState} from "react";
 

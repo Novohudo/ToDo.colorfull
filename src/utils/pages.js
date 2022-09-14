@@ -1,8 +1,8 @@
-//функция для округления результата количества страниц на заданый лимит
+
 export const getPageCount = (totalCount, limit) => {
 	return Math.ceil(totalCount / limit)
 }
-//заполнение массива
+
 export const getPagesArray = (totalPages) => {
 	let result = [];
 	for (let i = 0; i < totalPages; i++) {

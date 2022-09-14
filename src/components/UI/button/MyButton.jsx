@@ -10,6 +10,3 @@ const MyButton = ({children,...props}) => {
 };
 
 export default MyButton;
-
-
-//передача пропсов Внутрь компонента-<button {...props} className={style.myBtn}>

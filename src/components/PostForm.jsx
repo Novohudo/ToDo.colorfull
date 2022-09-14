@@ -5,7 +5,6 @@ import {useState} from "react";
 
 const PostForm = ({create}) => {
 	const [post, setPost] = useState({title:'', body:''});
-//create(newPost)-передает сформированый обьект на уровень выше к колбеку
 
 	const addNewPost = (e) => {
 		e.preventDefault()
@@ -17,20 +16,17 @@ const PostForm = ({create}) => {
 	}
 	return (
 			<form>
-				{/*управляемая компонента*/}
 				<MyInput
 					value={post.title}
 					onChange={e => setPost({...post, title: e.target.value})}
 					type={"text"}
-					placeholder={'название поста'}/>
-
-				{/*Неуправляемая компонента*/}
+					placeholder={'post name'}/>
 				<MyInput
 					value={post.body}
 					onChange={e => setPost({...post, body: e.target.value})}
 					type={"text"}
-					placeholder={'описание поста'}/>
-				<MyButton onClick={addNewPost}>новый пост</MyButton>
+					placeholder={'post description'}/>
+				<MyButton onClick={addNewPost}>new post</MyButton>
 			</form>
 	);
 };

@@ -3,9 +3,6 @@ import MyInput from "../components/UI/input/MyInput";
 import MyButton from "../components/UI/button/MyButton";
 import {AuthContext} from "../context";
 
-//!это заглушка логинизации
-//элемент реакции из useEffect(App)->>localStorage.setItem('auth','true')
-
 const Login = () => {
 	const {isAuth,setIsAuth}=useContext(AuthContext)
 	const login = event =>{
@@ -15,11 +12,11 @@ const Login = () => {
 	}
 	return (
 		<div>
-			<h2>Страница для логина</h2>
+			<h2>Login</h2>
 			<form onSubmit={login}>
-				<MyInput type={'text'} placeholder={"введите логин"}/>
-				<MyInput type={'text'} placeholder={"введите пароль"}/>
-				<MyButton>Войти</MyButton>
+				<MyInput type={'text'} placeholder={"login"}/>
+				<MyInput type={'text'} placeholder={"password"}/>
+				<MyButton>Log in</MyButton>
 			</form>
 		</div>
 	);
