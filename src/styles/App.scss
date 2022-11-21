@@ -89,6 +89,7 @@ $mobile: 375px;
   background-color: #ff0000;
   color: white;
   transition-duration: 1s;
+
 }
 
 .post-enter {
@@ -139,6 +140,7 @@ $mobile: 375px;
   @include Colors;
   border-radius: 16px;
   margin-top: 5px;
+
 }
 
 .navbar__links a {
@@ -162,8 +164,17 @@ $mobile: 375px;
 }
 .description{
   @include media(mobile){
+    margin-top: 200px;
     width: 365px;
+    color: gold;
   }
   margin-top: 100px;
+}
+.login{
+  @include media(mobile){
+    margin-top: 200px;
+    width: 350px;
+
+  }
 }
 
